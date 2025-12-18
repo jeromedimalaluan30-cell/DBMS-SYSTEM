@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - Pinoy Quiz</title>
+
+    <!-- MAIN STYLES -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="results-body">
+
+<div class="results-wrapper">
+
+    <!-- HEADER CARD -->
+        <div class="results-header-card glass">
+            <h1 class="title">
+                <i class="fa-solid fa-trophy gold-icon"></i> Quiz Results
+            </h1>
+
+            <div class="score-box">
+                <div class="score">{{ score }}/{{ total }}</div>
+                <div class="percentage">{{ "%.1f"|format(percentage) }}%</div>
+            </div>
+
+            {% if completion_saved %}
+            <div class="completion-msg">
+                <i class="fa-solid fa-check-circle"></i>
+                <strong>Quiz Completed!</strong> Your progress has been saved.
+                {% if difficulty and level %}
+                    <br><small>{{ difficulty|title }} - Level {{ level }}</small>
+                {% elif difficulty %}
+                    <br><small>{{ difficulty|title }}</small>
+                {% endif %}
+            </div>
+
+            
+            <div class="level-lock-msg">
+        
+                <strong></strong>
+                <br><small></small>
+            </div>
+            {% endif %}
+        </div>
+
+    <!-- REVIEW SECTION -->
+    <h2 class="review-title">Question Review</h2>
+
+    {% for result in results %}
+    <div class="review-item {{ 'correct' if result.is_correct else 'incorrect' }} glass">
+
+        <div class="question">
+            {{ loop.index }}. {{ result.question }}
+        </div>
+
+        <div class="answers">
+            <div class="user-answer">
+                <strong>Your Answer:</strong>
+                {% if result.is_unanswered %}
+                    <span class="unanswered">No Answer (Time Expired)</span>
+                {% else %}
+                    {{ result.user_answer }}
+                    {% if result.user_answer_value == 'A' %}({{ result.option_a }})
+                    {% elif result.user_answer_value == 'B' %}({{ result.option_b }})
+                    {% elif result.user_answer_value == 'C' %}({{ result.option_c }})
+                    {% elif result.user_answer_value == 'D' %}({{ result.option_d }})
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            {% if not result.is_correct %}
+            <div class="correct-answer">
+                <strong>Correct Answer:</strong> {{ result.correct_answer }}
+                {% if result.correct_answer == 'A' %}({{ result.option_a }})
+                {% elif result.correct_answer == 'B' %}({{ result.option_b }})
+                {% elif result.correct_answer == 'C' %}({{ result.option_c }})
+                {% elif result.correct_answer == 'D' %}({{ result.option_d }})
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="status">
+            {% if result.is_correct %}
+            <span class="correct-text"><i class="fa-solid fa-check-circle"></i> Correct!</span>
+            {% else %}
+            <span class="incorrect-text">
+                <i class="fa-solid fa-times-circle"></i>
+                {% if result.is_unanswered %}Unanswered{% else %}Incorrect{% endif %}
+            </span>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <!-- ACTION BUTTONS -->
+    <div class="actions">
+        <!-- SAVE button opens the modal -->
+        <button class="btn primary-btn" onclick="openSaveModal()">
+            <i class="fa-solid fa-save"></i> Save
+        </button>
+
+        <a href="{{ url_for('user_dashboard') }}" class="btn secondary-btn">
+            <i class="fa-solid fa-home"></i> Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+<!-- LEVEL UNLOCKED MODAL -->
+<div id="saveModal" class="confirm-overlay">
+    <div class="confirm-box">
+        <div class="confirm-icon">🎉</div>
+        <h2>Level Unlocked!</h2>
+        <p id="nextLevelText">Your next level is now available.</p>
+
+        <div class="confirm-actions">
+            <button class="btn-confirm" onclick="continueUnlock()">Continue</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+// OPEN MODAL
+function openSaveModal() {
+    document.getElementById("saveModal").style.display = "flex";
+}
+
+// WHEN USER CLICKS CONTINUE -> call unlock route
+function continueUnlock() {
+    window.location.href = "{{ url_for('unlock_next_level') }}";
+}
+</script>
+
+</body>
+</html>

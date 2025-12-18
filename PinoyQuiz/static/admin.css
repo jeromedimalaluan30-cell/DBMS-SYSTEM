@@ -1,0 +1,456 @@
+/* ================================
+   ADMIN SUPER DASHBOARD DESIGN
+   ================================ */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #111, #000);
+    background-size: 400% 400%;
+    animation: bgAnim 12s ease infinite;
+    color: #fff;
+}
+
+/* Background movement */
+@keyframes bgAnim {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------------- Sidebar ---------------- */
+.admin-sidebar {
+    width: 260px;
+    height: 100vh;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255,255,255,0.15);
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 30px 20px;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+}
+
+.admin-logo {
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #ffcf48;
+    text-shadow: 0 0 15px #ffcf48;
+}
+
+/* LOGOUT BUTTON */
+.admin-logout {
+    position: absolute;
+    bottom: 150px;
+    width: 85%;
+    padding: 0 1px;
+}
+
+.admin-logout a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #313131; /* yellow */
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.admin-logout a:hover {
+    background: #e0a800;
+    color: #000;
+}
+
+.admin-nav a {
+    display: block;
+    padding: 14px 15px;
+    margin: 10px 0;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.admin-nav a i {
+    margin-right: 10px;
+}
+
+.admin-nav a:hover,
+.admin-nav a.active {
+    background: #f1c40f;
+    color: #000;
+    font-weight: bold;
+}
+
+/* ---------------- MAIN CONTENT ---------------- */
+.admin-content {
+    margin-left: 260px;
+    padding: 40px 80px;
+}
+
+.admin-content-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/* ---------------- PAGE TITLE ---------------- */
+.page-title {
+    font-size: 35px;
+    font-weight: 700;
+    margin-bottom: 45px;
+    color: #ffcf48;
+    text-shadow: 0 0 10px #ffcf48;
+}
+
+/* ---------------- CARDS ---------------- */
+.admin-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.admin-card {
+    flex: 1;
+    min-width: 260px;
+    background: rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.admin-card i {
+    font-size: 50px;
+    margin-bottom: 15px;
+    color: #ffcf48;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px #ffcf48;
+}
+
+/* ---------------- TABLE CARD ---------------- */
+.table-card {
+    background: rgba(255,255,255,0.07);
+    padding: 25px;
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ---------------- TABLE ---------------- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #ffcf48;
+    color: #000;
+    padding: 15px;
+    text-align: left;
+}
+
+.admin-table td {
+    padding: 14px 12px;
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.17);
+}
+
+.admin-table tr:hover td {
+    background: rgba(0,234,255,0.15);
+}
+
+/* ---------------- BUTTONS ---------------- */
+.btn-primary {
+    padding: 12px 20px;
+    background: #ffcf48;
+    border: none;
+    color: #000;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 15px #ffcf48;
+    margin-bottom: 20px;
+}
+
+.btn-danger {
+    background: #ff2d2d;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    box-shadow: 0 0 15px #ff2d2d;
+}
+
+.action-btn {
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #000;
+    background: #ffcf48;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.action-btn.delete {
+    background: red;
+    color: #fff;
+}
+
+/* ================================
+   ADMIN ADD QUESTION FORM DESIGN
+   ================================ */
+
+.glass-form {
+    max-width: 850px;
+    margin: 60px auto;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 40px rgba(0,0,0,0.4);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 35px;
+    color: #ffcf48;
+    text-shadow: 0 0 10px #ffcf48;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #ffcf48;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 14px 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.3s;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #ffcf48;
+    box-shadow: 0 0 12px rgba(255,207,72,0.8);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.big-btn {
+    width: 100%;
+    font-size: 18px;
+    padding: 15px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.fancy-back {
+    position: fixed;
+    top: 25px;
+    left: 15px;
+    background: rgba(255,255,255,0.1);
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: #ffcf48;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.fancy-back:hover {
+    background: #ffcf48;
+    color: #000;
+    box-shadow: 0 0 15px #ffcf48;
+}
+
+@media (max-width: 768px) {
+    .glass-form {
+        margin: 40px 20px;
+        padding: 30px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fancy-back {
+        left: 20px;
+    }
+}
+
+/* ================================
+   ADMIN LEADERBOARD FILTERS
+   ================================ */
+
+.admin-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.admin-tabs .tab-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.admin-tabs .tab-btn:hover {
+    background: rgba(255,207,72,0.9);
+    color: #000;
+    box-shadow: 0 0 15px #ffcf48;
+    transform: translateY(-2px);
+}
+
+.admin-tabs .tab-btn.active {
+    background: #ffcf48;
+    color: #000;
+    box-shadow: 0 0 18px #ffcf48;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 25px;
+}
+
+.difficulty-select {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.7);
+    color: #ffcf48;
+    outline: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: -70px;
+    margin-bottom: 40px;
+}
+
+.difficulty-select:hover,
+.difficulty-select:focus {
+    border-color: #ffcf48;
+    box-shadow: 0 0 15px rgba(255,207,72,0.85);
+}
+
+.admin-table td:first-child {
+    font-weight: 700;
+    color: #ffcf48;
+}
+
+.admin-table td[colspan] {
+    padding: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+}
+
+.admin-table td:last-child {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+    .admin-content {
+        padding: 30px 25px;
+    }
+
+    .admin-tabs {
+        justify-content: center;
+    }
+
+    .leaderboard-header {
+        justify-content: center;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
+
+/* ================================
+   FIX EDIT / DELETE BUTTON OVERLAP
+   ================================ */
+
+.action-buttons {
+    display: flex;
+    gap: 10px; /* space between buttons */
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+    min-width: 170px; /* make sure Actions column is wide enough */
+    text-align: center;
+}
+
+.action-btn {
+    white-space: nowrap; /* prevent text wrapping */
+}
+
+.action-btn.delete {
+    /* existing styles are preserved */
+}

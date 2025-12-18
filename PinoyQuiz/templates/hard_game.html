@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hard Mode – Confusing Puzzle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    background: radial-gradient(circle at top, #162038, #0b1220);
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 { text-align: center; }
+
+.timer {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.clue-box {
+    background: #020617;
+    border: 2px solid #007d06;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.images {
+    display: grid;
+    grid-template-columns: repeat(2, 220px);
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.images img {
+    width: 220px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #1e293b;
+}
+
+.answer-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.answer-box {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #38bdf8;
+    border-radius: 8px;
+    font-size: 26px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #020617;
+    cursor: pointer;
+}
+
+.answer-box.wrong {
+    border-color: #ef4444;
+    background: #7f1d1d;
+}
+
+.puzzle-board {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.letter {
+    width: 60px;
+    height: 60px;
+    background-color: #007d06;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.letter.hidden { visibility: hidden; }
+
+.logout-btn1 {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    background: #ffcf48;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+    z-index: 1000;
+}
+
+.logout-btn1:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* POPUPS */
+.confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.confirm-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+}
+
+.btn-confirm {
+    background: #ffd84d;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<a href="{{ url_for('quiz_dashboard') }}" class="logout-btn1">
+    <i class="fa-solid fa-arrow-left"></i> Back
+</a>
+
+<div class="container">
+    <h1>🧩 HARD CONFUSING PUZZLE</h1>
+
+    <div class="timer">
+        ⏱ Time Left: <span id="time">40</span>s |
+        ⭐ Score: <span id="score">0</span>
+    </div>
+
+    <div class="clue-box" id="clueText"></div>
+    <div class="images" id="imageBox"></div>
+    <div class="answer-boxes" id="answerBoxes"></div>
+    <div class="puzzle-board" id="puzzleBoard"></div>
+</div>
+
+<!-- SUCCESS POPUP -->
+<div class="confirm-overlay" id="successOverlay">
+    <div class="confirm-box">
+        <h2>🏆 Correct!</h2>
+        <p id="successText"></p>
+        <button class="btn-confirm" onclick="goBack()">Continue</button>
+    </div>
+</div>
+
+<!-- TIME UP POPUP -->
+<div class="confirm-overlay" id="tryAgainOverlay">
+    <div class="confirm-box">
+        <h2>⏰ Time’s Up!</h2>
+        <button class="btn-confirm" onclick="restartGame()">Try Again</button>
+    </div>
+</div>
+
+<script>
+const category = {{ category_id or 1 }};
+
+const data = {
+    1: {
+        answer: "KATIPUNAN",
+        extra: "KATIPUNANXYZ",
+        clue: "This group was formed in secrecy during Spanish rule.",
+        images: [
+            "/static/katipunan_flag.jpg",
+            "/static/bonifacio_shrine.jpg",
+            "/static/blood_compact.jpg",
+            "/static/philippine_revolution.jpg"
+        ]
+    },
+    2: {
+        answer: "BAYANIHAN",
+        extra: "BYANIHANXYZABCDE",
+        clue: "This Filipino value shows unity and cooperation.",
+        images: [
+            "/static/bayanihan.jpg",
+            "/static/bahay_kubo.jpg",
+            "/static/filipino_village.jpg",
+            "/static/community_help.jpg"
+        ]
+    },
+    3: {
+        answer: "PHILIPPINES",
+        extra: "PHILIPPINESXYZ",
+        clue: "This is not just an island nor a city.",
+        images: [
+            "/static/philippines_satellite.jpg",
+            "/static/mayon_volcano.jpg",
+            "/static/palawan.jpg",
+            "/static/manila_skyline.jpg"
+        ]
+    }
+};
+
+let boxLetters = [];
+let timeLeft = 40;
+let timer;
+let score = 0;
+
+function startGame() {
+    const item = data[category];
+    document.getElementById("clueText").textContent = item.clue;
+
+    const imgBox = document.getElementById("imageBox");
+    imgBox.innerHTML = "";
+    item.images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        imgBox.appendChild(img);
+    });
+
+    const answerBoxes = document.getElementById("answerBoxes");
+    answerBoxes.innerHTML = "";
+    boxLetters = Array(item.answer.length).fill(null);
+
+    for (let i = 0; i < item.answer.length; i++) {
+        const box = document.createElement("div");
+        box.className = "answer-box";
+        box.onclick = () => removeFromBox(i);
+        answerBoxes.appendChild(box);
+    }
+
+    const letters = (item.answer + item.extra).split("").sort(() => Math.random() - 0.5);
+    const board = document.getElementById("puzzleBoard");
+    board.innerHTML = "";
+
+    letters.forEach(letter => {
+        const div = document.createElement("div");
+        div.className = "letter";
+        div.textContent = letter;
+        div.onclick = () => pickLetter(div);
+        board.appendChild(div);
+    });
+
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            document.getElementById("tryAgainOverlay").style.display = "flex";
+        }
+    }, 1000);
+}
+
+function pickLetter(div) {
+    const idx = boxLetters.indexOf(null);
+    if (idx === -1) return;
+
+    boxLetters[idx] = div;
+    document.getElementsByClassName("answer-box")[idx].textContent = div.textContent;
+    div.classList.add("hidden");
+
+    // 🔴 ADD ONLY: kapag puno na, red lang kung mali
+    if (!boxLetters.includes(null)) {
+        highlightIfWrongOnly();
+    }
+}
+
+function removeFromBox(index) {
+    if (!boxLetters[index]) return;
+    boxLetters[index].classList.remove("hidden");
+    document.getElementsByClassName("answer-box")[index].textContent = "";
+    document.getElementsByClassName("answer-box")[index].classList.remove("wrong");
+    boxLetters[index] = null;
+}
+
+function calculateScore() {
+    if (timeLeft >= 30) return 10;
+    if (timeLeft >= 20) return 5;
+    if (timeLeft >= 10) return 3;
+    return 1;
+}
+
+function checkAnswer() {
+    const correct = data[category].answer;
+    const player = boxLetters.map(l => l ? l.textContent : "").join("");
+
+    if (player === correct) {
+        clearInterval(timer);
+        score = calculateScore();
+        document.getElementById("score").textContent = score;
+
+        fetch("/save_hard_score", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ score, category })
+        });
+
+        document.getElementById("successText").innerHTML =
+            `⭐ You earned <strong>+${score}</strong> points`;
+
+        document.getElementById("successOverlay").style.display = "flex";
+    }
+}
+
+// 🔴 ADD ONLY FUNCTION
+function highlightIfWrongOnly() {
+    const correct = data[category].answer;
+    const player = boxLetters.map(l => l ? l.textContent : "").join("");
+
+    if (player !== correct) {
+        document.querySelectorAll(".answer-box")
+            .forEach(b => b.classList.add("wrong"));
+    } else {
+        checkAnswer(); // tama → saka lang mag-check
+    }
+}
+
+function restartGame() { window.location.reload(); }
+function goBack() { window.location.href = "{{ url_for('quiz_dashboard') }}"; }
+
+startGame();
+</script>
+
+</body>
+</html>

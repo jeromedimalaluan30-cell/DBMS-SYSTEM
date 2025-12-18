@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Leaderboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<!-- MAIN CONTENT -->
+<div class="admin-content">
+
+    <h1 class="page-title">🏆 Leaderboard</h1>
+
+    <!-- CATEGORY FILTER -->
+    <div class="category-tabs admin-tabs">
+
+        <a href="{{ url_for('admin_leaderboard', category='All', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='All' %}active{% endif %}">
+            All
+        </a>
+
+        <a href="{{ url_for('admin_leaderboard', category='History', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='History' %}active{% endif %}">
+            History
+        </a>
+
+        <a href="{{ url_for('admin_leaderboard', category='Culture', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='Culture' %}active{% endif %}">
+            Culture
+        </a>
+
+        <a href="{{ url_for('admin_leaderboard', category='Geography', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='Geography' %}active{% endif %}">
+            Geography
+        </a>
+
+    </div>
+
+    <!-- DIFFICULTY FILTER -->
+    <div class="leaderboard-header">
+        <select class="difficulty-select" onchange="location=this.value;">
+
+            <option value="{{ url_for('admin_leaderboard', category=active_category, difficulty='all') }}"
+                {% if active_difficulty=='all' %}selected{% endif %}>
+                All
+            </option>
+
+            <option value="{{ url_for('admin_leaderboard', category=active_category, difficulty='easy') }}"
+                {% if active_difficulty=='easy' %}selected{% endif %}>
+                Easy
+            </option>
+
+            <option value="{{ url_for('admin_leaderboard', category=active_category, difficulty='medium') }}"
+                {% if active_difficulty=='medium' %}selected{% endif %}>
+                Medium
+            </option>
+
+            <option value="{{ url_for('admin_leaderboard', category=active_category, difficulty='hard') }}"
+                {% if active_difficulty=='hard' %}selected{% endif %}>
+                Hard
+            </option>
+
+        </select>
+    </div>
+
+    <!-- LEADERBOARD TABLE -->
+    <table class="admin-table">
+
+       <thead>
+<tr>
+    <th>Rank</th>
+    <th>User</th>
+    <th>Category</th>
+
+    {% if active_difficulty != 'all' %}
+    <th>Difficulty</th>
+    {% endif %}
+
+    <th>Score</th>
+    <th>Rate</th>
+    <th>Date</th>
+</tr>
+</thead>
+
+
+        <tbody>
+            {% if leaderboard %}
+                {% for row in leaderboard %}
+                <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ row.username }}</td>
+    <td>{{ row.category }}</td>
+
+    {% if active_difficulty != 'all' %}
+    <td>{{ row.difficulty|title }}</td>
+    {% endif %}
+
+    <td>{{ row.total_score }}/{{ row.total_questions }}</td>
+    <td>{{ row.percentage }}%</td>
+    <td>{{ row.last_date }}</td>
+</tr>
+
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7" style="text-align:center;">
+                        No records found.
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

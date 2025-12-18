@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Questions</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    
+</head>
+
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="admin-content">
+
+    <h1 class="page-title">📚 Question Bank</h1>
+
+    <a href="{{ url_for('admin_add_question') }}" class="btn-primary">
+        <i class="fa-solid fa-plus"></i> Add Question
+    </a>
+
+    <!-- CATEGORY TABS -->
+    <div class="category-tabs admin-tabs" style="margin: 20px 0;">
+
+        <a href="{{ url_for('admin_questions', category='All', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='All' %}active{% endif %}">
+            All
+        </a>
+
+        <a href="{{ url_for('admin_questions', category='History', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='History' %}active{% endif %}">
+            History
+        </a>
+
+        <a href="{{ url_for('admin_questions', category='Culture', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='Culture' %}active{% endif %}">
+            Culture
+        </a>
+
+        <a href="{{ url_for('admin_questions', category='Geography', difficulty=active_difficulty) }}"
+           class="tab-btn {% if active_category=='Geography' %}active{% endif %}">
+            Geography
+        </a>
+
+    </div>
+
+    <!-- DIFFICULTY FILTER -->
+    <div style="margin: 15px 0;">
+        <form method="get" action="{{ url_for('admin_questions') }}">
+            <input type="hidden" name="category" value="{{ active_category }}">
+
+            <select name="difficulty-select" onchange="this.form.submit()"
+                    style="padding: 6px; border-radius: 5px;">
+                <option value="all" {% if active_difficulty == 'all' %}selected{% endif %}>
+                    All Difficulty
+                </option>
+                <option value="easy" {% if active_difficulty == 'easy' %}selected{% endif %}>
+                    Easy
+                </option>
+                <option value="medium" {% if active_difficulty == 'medium' %}selected{% endif %}>
+                    Medium
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <!-- QUESTIONS TABLE -->
+    <table class="admin-table">
+        <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Difficulty</th>
+            <th>Level</th>
+            <th>Question</th>
+            <th>Correct</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for q in questions %}
+        <tr>
+            <td>{{ q.id }}</td>
+            <td>{{ q.category_name }}</td>
+            <td>{{ q.difficulty }}</td>
+            <td>{{ q.level }}</td>
+            <td>{{ q.question }}</td>
+            <td>{{ q.correct_option }}</td>
+            <td>
+                <div class="action-buttons">
+                    <a href="{{ url_for('admin_edit_question', id=q.id) }}" class="action-btn">
+                        Edit
+                    </a>
+                    <a href="{{ url_for('admin_delete_question', id=q.id) }}"
+                       onclick="return confirm('Delete this question?');"
+                       class="action-btn delete">
+                        Delete
+                    </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

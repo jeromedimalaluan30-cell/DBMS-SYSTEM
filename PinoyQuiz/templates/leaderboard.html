@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Pinoy Quiz Trivia</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+<div style="padding: 20px 20px 0;">
+    <a href="{{ url_for('user_dashboard') }}" class="back-dashboard-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="page-content">
+
+    <!-- HERO -->
+    <section class="leaderboard-hero">
+        <h1>🏆 Leaderboard</h1>
+        <p>See the top players by category and difficulty</p>
+    </section>
+
+    <!-- CATEGORY TABS -->
+    <div class="category-tabs">
+
+        <!-- ALL TAB (GREEN WHEN ACTIVE) -->
+        <a href="{{ url_for('leaderboard', category='All', difficulty=active_difficulty) }}"
+           class="tab-btn all {% if active_category == 'All' %}active{% endif %}"
+           style="{% if active_category == 'All' %}background:#27ae60; color:white;{% endif %}">
+            🌍 All
+        </a>
+
+        <a href="{{ url_for('leaderboard', category='History', difficulty=active_difficulty) }}"
+           class="tab-btn history {% if active_category == 'History' %}active{% endif %}">
+            📜 History
+        </a>
+
+        <a href="{{ url_for('leaderboard', category='Culture', difficulty=active_difficulty) }}"
+           class="tab-btn culture {% if active_category == 'Culture' %}active{% endif %}">
+            🎭 Culture
+        </a>
+
+        <a href="{{ url_for('leaderboard', category='Geography', difficulty=active_difficulty) }}"
+           class="tab-btn geography {% if active_category == 'Geography' %}active{% endif %}">
+            🗺️ Geography
+        </a>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="leaderboard-wrapper">
+        <div class="leaderboard-card">
+
+            <!-- DIFFICULTY DROPDOWN -->
+            <div class="leaderboard-header">
+                <select class="difficulty-select"
+                        onchange="location = this.value;">
+
+                    <option value="{{ url_for('leaderboard', category=active_category, difficulty='all') }}"
+                        {% if active_difficulty == 'all' %}selected{% endif %}>
+                        All
+                    </option>
+
+                    <option value="{{ url_for('leaderboard', category=active_category, difficulty='easy') }}"
+                        {% if active_difficulty == 'easy' %}selected{% endif %}>
+                        Easy
+                    </option>
+
+                    <option value="{{ url_for('leaderboard', category=active_category, difficulty='medium') }}"
+                        {% if active_difficulty == 'medium' %}selected{% endif %}>
+                        Medium
+                    </option>
+
+                    <option value="{{ url_for('leaderboard', category=active_category, difficulty='hard') }}"
+                        {% if active_difficulty == 'hard' %}selected{% endif %}>
+                        Hard
+                    </option>
+
+                </select>
+            </div>
+
+            <h2 class="category-title">
+                {{ active_category }} – {{ active_difficulty|title }} Leaderboard
+            </h2>
+
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Category</th>
+
+                        {% if active_difficulty != 'all' %}
+                            <th>Difficulty</th>
+                        {% endif %}
+
+                        <th>Total Score</th>
+                        <th>Rate</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% if leaderboard %}
+                    {% for entry in leaderboard %}
+                    <tr>
+                        <td>
+                            {{ loop.index }}
+                            {% if entry.user_id == current_user_id %}
+                                <span class="you-badge">YOU</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ entry.player_name }}</td>
+                        <td>{{ entry.category_name }}</td>
+
+                        {% if active_difficulty != 'all' %}
+                            <td>{{ entry.difficulty }}</td>
+                        {% endif %}
+
+                        <td>{{ entry.total_score }}</td>
+                        <td>{{ entry.rate }}%</td>
+                        <td>{{ entry.date }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align:center;">No scores yet for this category.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="main-footer">
+    <div><strong>Pinoy Quiz Trivia</strong></div>
+    <div>© 2025 Pinoy Quiz Trivia</div>
+</footer>
+
+</body>
+</html>

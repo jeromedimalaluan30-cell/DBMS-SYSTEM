@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pinoy Quiz</title>
+
+    <!-- FONT AWESOME FOR EYE ICON -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- MAIN STYLE -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<script>
+    // Mark that user came from login
+    sessionStorage.setItem("fromLogin", "yes");
+</script>
+
+
+<body class="login-body">
+
+<div class="login-box">
+
+    <!-- 🔙 BACK BUTTON -->
+    <a href="{{ url_for('home') }}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h2 class="login-title">Login</h2>
+    <p class="login-p">Pinoy Trivia Quiz</p>
+
+    <form method="POST" class="login-form">
+
+        <!-- Username -->
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter username" autocomplete="off" required>
+
+        <!-- Password -->
+        <label>Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="password" name="password" placeholder="Enter password" autocomplete="new-password" required>
+            
+            
+            <i class="fa-solid fa-eye-slash toggle-eye" id="togglePassword"></i>
+        </div>
+
+        <!-- Login Button -->
+        <button class="btn-main" type="submit">Login</button>
+    </form> 
+
+    <p class="separator">OR</p>
+
+    <!-- Google Button -->
+    <a href="{{ url_for('google_login') }}" class="google-btn">
+    <i class="fa-brands fa-google"></i> Continue with Google
+</a>
+
+
+    <!-- Signup -->
+    <p class="signup-text">
+        Don't have an account?
+        <a href="{{ url_for('signup') }}">Sign Up</a>
+    </p>
+
+</div>
+
+<!-- SHOW/HIDE PASSWORD SCRIPT -->
+<script>
+const passwordField = document.getElementById("password");
+const toggleIcon = document.getElementById("togglePassword");
+
+toggleIcon.addEventListener("click", () => {
+    const hidden = passwordField.type === "password";
+    passwordField.type = hidden ? "text" : "password";
+
+    toggleIcon.classList.toggle("fa-eye");
+    toggleIcon.classList.toggle("fa-eye-slash");
+});
+</script>
+
+</body>
+</html>

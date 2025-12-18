@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Pinoy Quiz</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="login-body">
+
+<div class="login-box">
+
+    <a href="{{ url_for('login') }}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h2 class="login-title">Create Account</h2>
+    <p class="login-p">Join Pinoy Trivia Quiz</p>
+
+    <form method="POST" class="login-form" onsubmit="return checkPasswords()">
+
+        <!-- Username -->
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter username" required>
+
+        <!-- Password -->
+        <label>Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="password" name="password" 
+                   placeholder="Enter password"
+                   required
+                   pattern="(?=.*[A-Z])(?=.*\d).{8,}"
+                   title="Password must be at least 8 characters, include one uppercase letter and one number"
+                   oninvalid="this.setCustomValidity('Password must be at least 8 characters, include one uppercase letter and one number')"
+                   oninput="this.setCustomValidity('')">
+
+            <i class="fa-solid fa-eye-slash toggle-eye" id="togglePassword1"></i>
+        </div>
+
+        <!-- Confirm Password -->
+        <label>Confirm Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="confirmPassword" 
+                   placeholder="Re-enter password"
+                   required>
+
+            <i class="fa-solid fa-eye-slash toggle-eye" id="togglePassword2"></i>
+        </div>
+
+        <button class="btn-main" type="submit">Sign Up</button>
+    </form>
+
+    <p class="separator">OR</p>
+
+    <!-- Google Sign Up Button -->
+    <a href="{{ url_for('google_login') }}" class="google-btn">
+        <i class="fab fa-google"></i> Sign up with Google
+    </a>
+
+    <p class="signup-text">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login</a>
+    </p>
+
+</div>
+
+<script>
+// Show/Hide Password 1
+document.getElementById("togglePassword1").addEventListener("click", function() {
+    let pass = document.getElementById("password");
+    let type = pass.type === "password" ? "text" : "password";
+    pass.type = type;
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+});
+
+// Show/Hide Password 2
+document.getElementById("togglePassword2").addEventListener("click", function() {
+    let pass = document.getElementById("confirmPassword");
+    let type = pass.type === "password" ? "text" : "password";
+    pass.type = type;
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+});
+
+// Check password match
+function checkPasswords() {
+    let p1 = document.getElementById("password").value;
+    let p2 = document.getElementById("confirmPassword").value;
+
+    if (p1 !== p2) {
+        alert("Passwords do not match!");
+        return false;
+    }
+    return true;
+}
+</script>
+
+</body>
+</html>

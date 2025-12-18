@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviewer - Philippine History, Culture & Geography | Pinoy Quiz</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        
+        <!-- HEADER -->
+        <div class="dashboard-header">
+            <h1>📚 Reviewer Guide</h1>
+            <a href="{{ url_for('user_dashboard') }}" class="logout-btn">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- SUBTITLE -->
+        <p class="ph-subtitle" style="margin-top: -20px; margin-bottom: 30px;">
+            Comprehensive guide to Philippine History, Culture, and Geography. Study these materials to excel in your quizzes!
+        </p>
+
+        <!-- CATEGORY TABS -->
+        <div class="quiz-tabs" style="margin-bottom: 30px;">
+            <span class="quiz-tab active" onclick="switchCategory('history', event)">📜 History</span>
+            <span class="quiz-tab" onclick="switchCategory('culture', event)">🎭 Culture</span>
+            <span class="quiz-tab" onclick="switchCategory('geography', event)">🗺️ Geography</span>
+        </div>
+
+        <!-- HISTORY SECTION -->
+        <div id="history-section" class="reviewer-section active">
+            <div class="reviewer-content-card">
+                <div class="reviewer-header">
+                    <div class="ph-icon history">
+                        <i class="fa-solid fa-landmark"></i>
+                    </div>
+                    <h2>Philippine History</h2>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-clock"></i> Pre-Colonial Period</h3>
+                    <p>Before the arrival of Spanish colonizers in 1521, the Philippines was already home to various indigenous communities with rich cultures and trading relationships with neighboring Asian countries.</p>
+                    <ul>
+                        <li><strong>Barangay System:</strong> Small independent communities led by a datu (chieftain)</li>
+                        <li><strong>Trade:</strong> Active trade with China, Japan, and other Southeast Asian nations</li>
+                        <li><strong>Writing System:</strong> Baybayin script used by Tagalog and other ethnic groups</li>
+                        <li><strong>Religion:</strong> Animism and ancestor worship were common practices</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-cross"></i> Spanish Colonial Period (1521-1898)</h3>
+                    <p>Ferdinand Magellan arrived in 1521, marking the beginning of over 300 years of Spanish rule.</p>
+                    <ul>
+                        <li><strong>1565:</strong> Miguel López de Legazpi established the first Spanish settlement in Cebu</li>
+                        <li><strong>1571:</strong> Manila became the capital of the Spanish East Indies</li>
+                        <li><strong>Galleon Trade:</strong> Manila-Acapulco trade route (1565-1815) connected Asia and the Americas</li>
+                        <li><strong>Christianization:</strong> Introduction of Catholicism throughout the archipelago</li>
+                        <li><strong>Revolts:</strong> Numerous uprisings against Spanish rule, including the Dagohoy Rebellion (1744-1829)</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-flag"></i> Philippine Revolution (1896-1898)</h3>
+                    <p>The struggle for independence from Spain culminated in the Philippine Revolution.</p>
+                    <ul>
+                        <li><strong>1896:</strong> Andrés Bonifacio founded the Katipunan (KKK) - a secret revolutionary society</li>
+                        <li><strong>Cry of Pugad Lawin:</strong> Start of the revolution on August 23, 1896</li>
+                        <li><strong>1897:</strong> Execution of Dr. José Rizal, national hero and reformist</li>
+                        <li><strong>1898:</strong> Emilio Aguinaldo declared Philippine independence on June 12 in Kawit, Cavite</li>
+                        <li><strong>Malolos Republic:</strong> First Philippine Republic established in 1899</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-star"></i> National Heroes</h3>
+                    <ul>
+                        <li><strong>Dr. José Rizal:</strong> National hero, author of "Noli Me Tangere" and "El Filibusterismo"</li>
+                        <li><strong>Andrés Bonifacio:</strong> "Supremo" of the Katipunan, Father of the Philippine Revolution</li>
+                        <li><strong>Emilio Aguinaldo:</strong> First President of the Philippines</li>
+                        <li><strong>Juan Luna:</strong> Renowned painter, known for "Spoliarium"</li>
+                        <li><strong>Marcelo H. del Pilar:</strong> Journalist and reformist, "Plaridel"</li>
+                        <li><strong>Graciano López Jaena:</strong> Orator and reformist, founder of La Solidaridad</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-building-columns"></i> American Period (1898-1946)</h3>
+                    <ul>
+                        <li><strong>1898:</strong> Spanish-American War led to American occupation</li>
+                        <li><strong>Philippine-American War:</strong> Conflict from 1899-1902</li>
+                        <li><strong>1935:</strong> Commonwealth of the Philippines established, Manuel L. Quezon as first President</li>
+                        <li><strong>Education:</strong> Public school system introduced, English as medium of instruction</li>
+                        <li><strong>1941-1945:</strong> Japanese occupation during World War II</li>
+                        <li><strong>1946:</strong> Full independence granted on July 4</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-dove"></i> Modern Philippines</h3>
+                    <ul>
+                        <li><strong>1986:</strong> People Power Revolution (EDSA Revolution) ousted Ferdinand Marcos</li>
+                        <li><strong>1987:</strong> New Constitution ratified</li>
+                        <li><strong>Presidents:</strong> Notable leaders include Corazon Aquino, Fidel V. Ramos, Gloria Macapagal-Arroyo, Benigno Aquino III, and Rodrigo Duterte</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CULTURE SECTION -->
+        <div id="culture-section" class="reviewer-section">
+            <div class="reviewer-content-card">
+                <div class="reviewer-header">
+                    <div class="ph-icon culture">
+                        <i class="fa-solid fa-mask"></i>
+                    </div>
+                    <h2>Filipino Culture</h2>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-heart"></i> Core Values</h3>
+                    <ul>
+                        <li><strong>Bayanihan:</strong> Community spirit of helping one another</li>
+                        <li><strong>Utang na Loob:</strong> Debt of gratitude, sense of reciprocity</li>
+                        <li><strong>Pakikisama:</strong> Getting along with others, harmony</li>
+                        <li><strong>Hiya:</strong> Sense of shame, modesty, and propriety</li>
+                        <li><strong>Respect for Elders:</strong> "Po" and "Opo" as signs of respect</li>
+                        <li><strong>Hospitality:</strong> Welcoming guests with warmth and generosity</li>
+                        <li><strong>Family First:</strong> Strong family bonds and extended family support</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-utensils"></i> Filipino Cuisine</h3>
+                    <p>Filipino food reflects the country's diverse cultural influences and regional variations.</p>
+                    <ul>
+                        <li><strong>Adobo:</strong> National dish - meat marinated in vinegar, soy sauce, and spices</li>
+                        <li><strong>Sinigang:</strong> Sour soup with tamarind base</li>
+                        <li><strong>Lechon:</strong> Roasted whole pig, popular in celebrations</li>
+                        <li><strong>Kare-Kare:</strong> Oxtail stew with peanut sauce</li>
+                        <li><strong>Halo-Halo:</strong> Popular shaved ice dessert with various toppings</li>
+                        <li><strong>Balut:</strong> Fertilized duck egg, considered a delicacy</li>
+                        <li><strong>Chicken Inasal:</strong> Grilled chicken marinated in calamansi and annatto</li>
+                        <li><strong>Pancit:</strong> Noodle dishes (Pancit Canton, Bihon, Malabon)</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-music"></i> Traditional Arts & Music</h3>
+                    <ul>
+                        <li><strong>Kundiman:</strong> Traditional Filipino love songs</li>
+                        <li><strong>Tinikling:</strong> National dance with bamboo poles</li>
+                        <li><strong>Pandanggo sa Ilaw:</strong> Dance with oil lamps</li>
+                        <li><strong>Carinosa:</strong> National dance of the Philippines</li>
+                        <li><strong>Kulintang:</strong> Traditional gong ensemble from Mindanao</li>
+                        <li><strong>Harana:</strong> Traditional serenading</li>
+                        <li><strong>OPM:</strong> Original Pilipino Music - modern Filipino music</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-calendar-days"></i> Festivals</h3>
+                    <p>The Philippines is known as the "Festival Capital of Asia" with numerous colorful celebrations.</p>
+                    <ul>
+                        <li><strong>Sinulog Festival:</strong> Cebu City - honors Santo Niño (January)</li>
+                        <li><strong>Ati-Atihan Festival:</strong> Kalibo, Aklan - one of the oldest festivals</li>
+                        <li><strong>Panagbenga Festival:</strong> Baguio - Flower Festival (February)</li>
+                        <li><strong>Moriones Festival:</strong> Marinduque - Easter celebration</li>
+                        <li><strong>Kadayawan Festival:</strong> Davao - harvest festival (August)</li>
+                        <li><strong>Pahiyas Festival:</strong> Quezon - harvest thanksgiving (May)</li>
+                        <li><strong>MassKara Festival:</strong> Bacolod - "City of Smiles" (October)</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-language"></i> Languages</h3>
+                    <ul>
+                        <li><strong>Filipino:</strong> National language based on Tagalog</li>
+                        <li><strong>English:</strong> Widely spoken, official language</li>
+                        <li><strong>Major Languages:</strong> Tagalog, Cebuano, Ilocano, Hiligaynon, Waray, Bicolano, Kapampangan, Pangasinan</li>
+                        <li><strong>Over 170 Languages:</strong> The Philippines has one of the most diverse linguistic landscapes in the world</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-church"></i> Religion</h3>
+                    <ul>
+                        <li><strong>Roman Catholicism:</strong> 80% of the population</li>
+                        <li><strong>Islam:</strong> 5-6%, primarily in Mindanao</li>
+                        <li><strong>Protestantism:</strong> Growing Christian denominations</li>
+                        <li><strong>Indigenous Beliefs:</strong> Various animistic and traditional practices</li>
+                        <li><strong>Religious Festivals:</strong> Christmas, Holy Week, and various patron saint feasts are major celebrations</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-people-group"></i> Social Customs</h3>
+                    <ul>
+                        <li><strong>Mano:</strong> Blessing gesture - taking an elder's hand to one's forehead</li>
+                        <li><strong>Fiesta:</strong> Community celebrations with abundant food</li>
+                        <li><strong>Boodle Fight:</strong> Communal eating from banana leaves</li>
+                        <li><strong>Karaoke:</strong> Popular pastime and social activity</li>
+                        <li><strong>Close Family Ties:</strong> Extended families often live together or nearby</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- GEOGRAPHY SECTION -->
+        <div id="geography-section" class="reviewer-section">
+            <div class="reviewer-content-card">
+                <div class="reviewer-header">
+                    <div class="ph-icon geography">
+                        <i class="fa-solid fa-earth-asia"></i>
+                    </div>
+                    <h2>Philippine Geography</h2>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-map"></i> Overview</h3>
+                    <ul>
+                        <li><strong>Location:</strong> Southeast Asia, between the South China Sea and the Pacific Ocean</li>
+                        <li><strong>Archipelago:</strong> 7,641 islands (7,107 at high tide)</li>
+                        <li><strong>Total Land Area:</strong> Approximately 300,000 square kilometers</li>
+                        <li><strong>Coastline:</strong> 36,289 kilometers - one of the longest in the world</li>
+                        <li><strong>Capital:</strong> Manila (Metro Manila - National Capital Region)</li>
+                        <li><strong>Time Zone:</strong> Philippine Standard Time (PST) - UTC+8</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-mountain"></i> Major Islands</h3>
+                    <ul>
+                        <li><strong>Luzon:</strong> Largest island (104,688 km²) - home to Manila, Baguio, and Quezon City</li>
+                        <li><strong>Visayas:</strong> Central region - includes Cebu, Bohol, Negros, Panay, Leyte, Samar</li>
+                        <li><strong>Mindanao:</strong> Second largest (97,530 km²) - includes Davao, Cagayan de Oro, Zamboanga</li>
+                        <li><strong>Palawan:</strong> Longest island, known for biodiversity and pristine beaches</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-volcano"></i> Mountains & Volcanoes</h3>
+                    <ul>
+                        <li><strong>Mount Apo:</strong> Highest peak (2,954 meters) - Mindanao</li>
+                        <li><strong>Mount Pulag:</strong> Luzon's highest (2,922 meters) - known for sea of clouds</li>
+                        <li><strong>Mayon Volcano:</strong> Perfect cone shape - Albay, Bicol</li>
+                        <li><strong>Taal Volcano:</strong> Smallest active volcano - Batangas</li>
+                        <li><strong>Mount Pinatubo:</strong> Famous 1991 eruption - Zambales</li>
+                        <li><strong>Mount Kanlaon:</strong> Active volcano - Negros Island</li>
+                        <li><strong>Chocolate Hills:</strong> Unique geological formation - Bohol (1,268 hills)</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-water"></i> Bodies of Water</h3>
+                    <ul>
+                        <li><strong>South China Sea:</strong> West of the Philippines</li>
+                        <li><strong>Philippine Sea:</strong> East of the Philippines</li>
+                        <li><strong>Sulu Sea:</strong> Between Palawan and Mindanao</li>
+                        <li><strong>Celebes Sea:</strong> South of Mindanao</li>
+                        <li><strong>Pasig River:</strong> Flows through Metro Manila</li>
+                        <li><strong>Laguna de Bay:</strong> Largest lake in the Philippines</li>
+                        <li><strong>Underground River:</strong> Puerto Princesa - UNESCO World Heritage Site</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-cloud-sun"></i> Climate</h3>
+                    <ul>
+                        <li><strong>Tropical Climate:</strong> Hot and humid year-round</li>
+                        <li><strong>Dry Season:</strong> November to April</li>
+                        <li><strong>Wet Season:</strong> May to October (monsoon season)</li>
+                        <li><strong>Typhoon Belt:</strong> Average of 20 typhoons per year</li>
+                        <li><strong>Temperature:</strong> Average 25-32°C (77-90°F)</li>
+                        <li><strong>Coolest Areas:</strong> Baguio, Tagaytay, and mountain regions</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-tree"></i> Biodiversity</h3>
+                    <ul>
+                        <li><strong>Biodiversity Hotspot:</strong> One of 17 megadiverse countries</li>
+                        <li><strong>Endemic Species:</strong> High percentage of unique flora and fauna</li>
+                        <li><strong>Philippine Eagle:</strong> National bird, one of the largest eagles in the world</li>
+                        <li><strong>Tarsier:</strong> Smallest primate - found in Bohol and Mindanao</li>
+                        <li><strong>Whale Shark:</strong> Donsol, Sorsogon - "Butanding" capital</li>
+                        <li><strong>Coral Reefs:</strong> Tubbataha Reefs Natural Park - UNESCO World Heritage</li>
+                        <li><strong>Rainforests:</strong> Home to diverse plant and animal species</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-city"></i> Major Cities</h3>
+                    <ul>
+                        <li><strong>Manila:</strong> Capital, historic Intramuros</li>
+                        <li><strong>Quezon City:</strong> Most populous city, former capital</li>
+                        <li><strong>Cebu City:</strong> "Queen City of the South" - oldest city</li>
+                        <li><strong>Davao City:</strong> Largest city by land area</li>
+                        <li><strong>Baguio:</strong> "Summer Capital" - cool climate</li>
+                        <li><strong>Iloilo City:</strong> "City of Love" - rich history</li>
+                        <li><strong>Cagayan de Oro:</strong> "City of Golden Friendship"</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-landmark"></i> Natural Wonders</h3>
+                    <ul>
+                        <li><strong>Boracay:</strong> Famous white sand beach - Aklan</li>
+                        <li><strong>Palawan:</strong> "Best Island in the World" - El Nido, Coron</li>
+                        <li><strong>Banaue Rice Terraces:</strong> "Eighth Wonder of the World" - Ifugao</li>
+                        <li><strong>Chocolate Hills:</strong> Unique geological formation - Bohol</li>
+                        <li><strong>Enchanted River:</strong> Deep spring river - Hinatuan, Surigao del Sur</li>
+                        <li><strong>Kawasan Falls:</strong> Multi-tiered waterfalls - Cebu</li>
+                        <li><strong>Hundred Islands:</strong> National Park - Pangasinan</li>
+                    </ul>
+                </div>
+
+                <div class="reviewer-topic">
+                    <h3><i class="fa-solid fa-map-location-dot"></i> Regions</h3>
+                    <p>The Philippines is divided into 17 regions across three main island groups:</p>
+                    <ul>
+                        <li><strong>Luzon:</strong> Ilocos, Cagayan Valley, Central Luzon, CALABARZON, MIMAROPA, Bicol, Cordillera, NCR</li>
+                        <li><strong>Visayas:</strong> Western Visayas, Central Visayas, Eastern Visayas</li>
+                        <li><strong>Mindanao:</strong> Zamboanga Peninsula, Northern Mindanao, Davao, SOCCSKSARGEN, Caraga, BARMM</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div>
+            <strong>Pinoy Quiz Trivia</strong><br>
+            Celebrating Filipino knowledge and culture.
+        </div>
+        <div>
+            © 2025 Pinoy Quiz Trivia<br>
+            All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        function switchCategory(category, event) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.quiz-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Hide all sections
+            document.querySelectorAll('.reviewer-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Show selected section
+            document.getElementById(category + '-section').classList.add('active');
+        }
+    </script>
+</body>
+</html>
+

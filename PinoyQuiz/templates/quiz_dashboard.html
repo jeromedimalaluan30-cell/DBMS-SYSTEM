@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Category - Pinoy Quiz</title>
+
+    <!-- MAIN STYLES -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- QUIZ DASHBOARD STYLES -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz_dashboard.css') }}">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <h1>Select Quiz Category 🎯</h1>
+
+        <a href="{{ url_for('user_dashboard') }}" class="logout-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <!-- CATEGORY TABS -->
+    <div class="quiz-tabs">
+        <span class="quiz-tab active" onclick="switchTab(1, event)">📜 History</span>
+        <span class="quiz-tab" onclick="switchTab(2, event)">🎭 Culture</span>
+        <span class="quiz-tab" onclick="switchTab(3, event)">🗺️ Geography</span>
+    </div>
+
+    <!-- DIFFICULTY OPTIONS -->
+    <div class="difficulty-container" id="difficultyContainer">
+
+        <div class="difficulty-boxes">
+
+            <!-- EASY -->
+            <div class="difficulty-box-wrapper">
+                <div class="difficulty-box easy" onclick="showEasyLevels(event)">
+                    <i class="fa-solid fa-seedling"></i>
+                    <h3>Easy</h3>
+                    <p>Perfect for beginners</p>
+                    <div class="play-overlay" id="easyOverlay">SELECT LEVEL</div>
+                </div>
+
+                <!-- EASY LEVELS (10 Levels) -->
+                <div class="easy-levels" id="easyLevels" style="display: none;">
+                    {% for i in range(1, 11) %}
+                        <a href="#"
+                           class="level-box"
+                           data-level="{{ i }}"
+                           onclick="startEasyLevel(event, {{ i }})"
+                           id="easy_level_{{ i }}">
+
+                            <i class="fa-solid fa-{{ i }}"></i>
+                            <h4>Level {{ i }}</h4>
+                            <p>{{ 'Start here' if i == 1 else 'Level ' ~ i }}</p>
+
+                            <span class="completion-info"
+                                  data-category="{{ current_category or 1 }}"
+                                  data-difficulty="easy"
+                                  data-level="{{ i }}">
+                            </span>
+
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- MEDIUM -->
+            <div class="difficulty-box-wrapper">
+                <div class="difficulty-box medium" onclick="showMediumLevels(event)">
+                    <i class="fa-solid fa-fire"></i>
+                    <h3>Medium</h3>
+                    <p>Moderate challenge</p>
+                    <div class="play-overlay" id="mediumOverlay">SELECT LEVEL</div>
+                </div>
+
+                <!-- MEDIUM LEVELS (10 Levels) -->
+                <div class="easy-levels" id="mediumLevels" style="display: none;">
+                    {% for i in range(1, 11) %}
+                        <a href="#"
+                           class="level-box"
+                           data-level="{{ i }}"
+                           onclick="startMediumLevel(event, {{ i }})"
+                           id="medium_level_{{ i }}">
+
+                            <i class="fa-solid fa-{{ i }}"></i>
+                            <h4>Level {{ i }}</h4>
+                            <p>{{ 'Beginner' if i == 1 else 'Level ' ~ i }}</p>
+
+                            <span class="completion-info"
+                                  data-category="{{ current_category or 1 }}"
+                                  data-difficulty="medium"
+                                  data-level="{{ i }}">
+                            </span>
+
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- HARD -->
+            <a href="#" class="difficulty-box hard" id="hardBox" onclick="startQuiz(event, 'hard')">
+                <i class="fa-solid fa-trophy"></i>
+                <h3>Hard</h3>
+                <p>Expert level</p>
+                <div class="play-overlay">PLAY NOW</div>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+/* ---------------------------
+   COMPLETIONS DATA FROM SERVER
+   --------------------------- */
+var completions = {{ completions_json|safe }};
+var currentCategory = {{ current_category or 1 }};
+
+/* Helper: Build completion key */
+function getCompletionKey(category, difficulty, level) {
+    return `${category}_${difficulty}_${level}`;
+}
+
+/* Update badges */
+function updateCompletionBadges() {
+    document.querySelectorAll(".completion-info").forEach(span => {
+        const diff = span.getAttribute("data-difficulty");
+        const lvl = span.getAttribute("data-level");
+        const key = getCompletionKey(currentCategory, diff, lvl);
+
+        span.innerHTML = "";
+        if (completions[key] && completions[key].completed) {
+            span.innerHTML =
+                `<div class="completion-badge"><i class="fa-solid fa-check"></i> Completed</div>
+                 <div class="best-score">Best: ${Math.round(completions[key].best_score)}%</div>`;
+        }
+    });
+}
+
+/* SWITCH CATEGORY */
+function switchTab(category, event) {
+    currentCategory = category;
+
+    document.querySelectorAll(".quiz-tab").forEach(t => t.classList.remove("active"));
+    event.target.classList.add("active");
+
+    document.getElementById("easyLevels").style.display = "none";
+    document.getElementById("mediumLevels").style.display = "none";
+
+    document.getElementById("easyOverlay").textContent = "SELECT LEVEL";
+    document.getElementById("mediumOverlay").textContent = "SELECT LEVEL";
+
+    updateCompletionBadges();
+    applyLevelLocks();
+}
+
+/* SHOW EASY LEVELS */
+function showEasyLevels(event) {
+    event.stopPropagation();
+    let panel = document.getElementById("easyLevels");
+    let mediumWrapper = document.querySelector(".difficulty-box.medium").closest(".difficulty-box-wrapper");
+    let hardBox = document.getElementById("hardBox");
+
+    if (panel.style.display === "none") {
+        panel.style.display = "flex";
+        mediumWrapper.style.display = "none";
+        hardBox.style.display = "none";
+        document.getElementById("easyOverlay").textContent = "BACK";
+    } else {
+        panel.style.display = "none";
+        mediumWrapper.style.display = "block";
+        hardBox.style.display = "flex";
+        document.getElementById("easyOverlay").textContent = "SELECT LEVEL";
+    }
+
+    updateCompletionBadges();
+    applyLevelLocks();
+}
+
+/* SHOW MEDIUM LEVELS */
+function showMediumLevels(event) {
+    event.stopPropagation();
+    let panel = document.getElementById("mediumLevels");
+    let easyWrapper = document.querySelector(".difficulty-box.easy").closest(".difficulty-box-wrapper");
+    let hardBox = document.getElementById("hardBox");
+
+    if (panel.style.display === "none") {
+        panel.style.display = "flex";
+        easyWrapper.style.display = "none";
+        hardBox.style.display = "none";
+        document.getElementById("mediumOverlay").textContent = "BACK";
+    } else {
+        panel.style.display = "none";
+        easyWrapper.style.display = "block";
+        hardBox.style.display = "flex";
+        document.getElementById("mediumOverlay").textContent = "SELECT LEVEL";
+    }
+
+    updateCompletionBadges();
+    applyLevelLocks();
+}
+
+/* START LEVELS */
+function startEasyLevel(event, level) {
+    event.preventDefault();
+    window.location.href = `/start_quiz/${currentCategory}?difficulty=easy&level=${level}`;
+}
+
+function startMediumLevel(event, level) {
+    event.preventDefault();
+    window.location.href = `/start_quiz/${currentCategory}?difficulty=medium&level=${level}`;
+}
+function startQuiz(event, difficulty) {
+    event.preventDefault();
+
+    if (difficulty === "hard") {
+        window.location.href = `/hard_game?category=${currentCategory}`;
+    } else {
+        window.location.href = `/start_quiz/${currentCategory}?difficulty=${difficulty}`;
+    }
+}
+
+
+
+/* LOCK SYSTEM */
+function isLevelUnlocked(difficulty, level) {
+    if (level === 1) return true;
+    let prevKey = `${currentCategory}_${difficulty}_${level - 1}`;
+    return completions[prevKey] && completions[prevKey].completed;
+}
+
+function applyLevelLocks() {
+    // Easy Levels
+    document.querySelectorAll("#easyLevels .level-box").forEach(box => {
+        let level = parseInt(box.dataset.level);
+        if (!isLevelUnlocked("easy", level)) {
+            box.classList.add("locked");
+            box.onclick = () => alert("This level is locked. Complete the previous one.");
+        } else {
+            box.classList.remove("locked");
+            box.onclick = (e) => startEasyLevel(e, level);
+        }
+    });
+
+    // Medium Levels
+    document.querySelectorAll("#mediumLevels .level-box").forEach(box => {
+        let level = parseInt(box.dataset.level);
+        if (!isLevelUnlocked("medium", level)) {
+            box.classList.add("locked");
+            box.onclick = () => alert("This level is locked. Complete the previous one.");
+        } else {
+            box.classList.remove("locked");
+            box.onclick = (e) => startMediumLevel(e, level);
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateCompletionBadges();
+    applyLevelLocks();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Pinoy Quiz Trivia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="logo">🇵🇭 Pinoy Quiz</div>
+    <nav class="header-nav">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}" class="active">About</a>
+        <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+    </nav>
+</header>
+
+<section class="about-hero" style="padding-top: 80px;">
+    <h1>About Pinoy Quiz Trivia</h1>
+    <p>Your fun and interactive way to explore Philippine history, culture & geography.</p>
+</section>
+
+<div class="about-wrapper">
+
+    <div class="about-card">
+        <h2>🎯 Our Purpose</h2>
+        <p>Pinoy Quiz Trivia is an engaging platform created to help Filipinos and learners worldwide discover the beauty of the Philippines — from historical stories to cultural gems and iconic places.</p>
+    </div>
+
+    <div class="about-card">
+        <h2>🇵🇭 What You’ll Learn</h2>
+        <ul>
+            <li><strong>📖 History:</strong> Important events, heroes, and milestones.</li>
+            <li><strong>🎭 Culture:</strong> Traditions, festivals, customs, and arts.</li>
+            <li><strong>🗺️ Geography:</strong> Islands, landmarks, regions & natural wonders.</li>
+        </ul>
+    </div>
+
+    <div class="about-card">
+        <h2>⚙️ How It Works</h2>
+        <ol>
+            <li>Choose a quiz category</li>
+            <li>Answer multiple-choice questions</li>
+            <li>See your score instantly</li>
+            <li>Save & compare your scores</li>
+            <li>Top the leaderboard!</li>
+        </ol>
+    </div>
+
+    <div class="about-card">
+        <h2>📬 Contact & Support</h2>
+        <p>Have ideas or feedback? Reach us at <strong>support@pinoyquiz.com</strong>.</p>
+        <p>Follow us on social media for more updates!</p>
+    </div>
+
+</div>
+
+<footer class="main-footer">
+    <div>
+        <strong>Pinoy Quiz Trivia</strong><br>
+        Celebrating Filipino knowledge and culture.
+    </div>
+
+    <div>
+        © 2025 Pinoy Quiz Trivia<br>
+        All Rights Reserved.
+    </div>
+</footer>
+
+</body>
+</html>

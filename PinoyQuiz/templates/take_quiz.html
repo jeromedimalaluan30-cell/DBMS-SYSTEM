@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz - Pinoy Quiz</title>
+    
+    <!-- MAIN STYLES -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+   
+</head>
+<body class="dashboard-body">
+
+<div class="quiz-container">
+    <a href="{{ url_for('quiz_dashboard') }}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Categories
+    </a>
+    
+    <div class="quiz-header">
+        <h1>📝 Quiz Time!</h1>
+        {% if questions %}
+        <div class="question-counter">Total Questions: <span id="totalQuestions">{{ questions|length }}</span></div>
+        {% endif %}
+    </div>
+    
+    {% if questions and questions|length > 0 %}
+    <!-- Start Screen -->
+    <div id="startScreen" class="start-screen">
+        <h2>Ready to Start?</h2>
+        <p>You will have <strong>10 seconds</strong> to answer each question.</p>
+        <button class="start-btn" onclick="startQuiz()">
+            <i class="fa-solid fa-play"></i> Start Quiz
+        </button>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar" style="display: none;">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    
+    <!-- Timer Display -->
+    <div class="timer-display" id="timerDisplay" style="display: none;">
+        <i class="fa-solid fa-clock"></i> <span id="timer">10</span>
+    </div>
+    
+    <!-- Quiz Form -->
+    <form id="quizForm" method="POST" action="{{ url_for('submit_quiz') }}" style="display: none;">
+        {% for question in questions %}
+        <div class="question-card" data-question-id="{{ question.id }}" data-correct="{{ question.correct_option }}">
+            <div class="question-text">
+                Question {{ loop.index }}: {{ question.question }}
+            </div>
+            
+            <div class="options-container">
+                <div class="option-item" onclick="selectOption(this, 'A')">
+                    <input type="radio" 
+                           id="q{{ question.id }}_a" 
+                           name="question_{{ question.id }}" 
+                           value="A">
+                    <label for="q{{ question.id }}_a">
+                        <strong>A.</strong> {{ question.option_a }}
+                    </label>
+                </div>
+                
+                <div class="option-item" onclick="selectOption(this, 'B')">
+                    <input type="radio" 
+                           id="q{{ question.id }}_b" 
+                           name="question_{{ question.id }}" 
+                           value="B">
+                    <label for="q{{ question.id }}_b">
+                        <strong>B.</strong> {{ question.option_b }}
+                    </label>
+                </div>
+                
+                <div class="option-item" onclick="selectOption(this, 'C')">
+                    <input type="radio" 
+                           id="q{{ question.id }}_c" 
+                           name="question_{{ question.id }}" 
+                           value="C">
+                    <label for="q{{ question.id }}_c">
+                        <strong>C.</strong> {{ question.option_c }}
+                    </label>
+                </div>
+                
+                <div class="option-item" onclick="selectOption(this, 'D')">
+                    <input type="radio" 
+                           id="q{{ question.id }}_d" 
+                           name="question_{{ question.id }}" 
+                           value="D">
+                    <label for="q{{ question.id }}_d">
+                        <strong>D.</strong> {{ question.option_d }}
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Store correct answer for validation -->
+            <input type="hidden" name="correct_{{ question.id }}" value="{{ question.correct_option }}">
+            
+            <button type="button" class="next-btn" onclick="nextQuestion()" disabled>
+                {% if loop.last %}
+                <i class="fa-solid fa-check"></i> Finish Quiz
+                {% else %}
+                <i class="fa-solid fa-arrow-right"></i> Next Question
+                {% endif %}
+            </button>
+        </div>
+        {% endfor %}
+    </form>
+    {% else %}
+    <div class="no-questions">
+        <i class="fa-solid fa-inbox"></i>
+        <h2>No Questions Available</h2>
+        <p>There are no questions available for this quiz. Please try another category or difficulty level.</p>
+        
+    </div>
+    {% endif %}
+</div>
+
+<script>
+let currentQuestionIndex = 0;
+let timer;
+let timeLeft = 10;
+let answers = {};
+let quizFinished = false;
+const questions = document.querySelectorAll('.question-card');
+const totalQuestions = questions.length;
+
+function startQuiz() {
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('quizForm').style.display = 'block';
+    document.getElementById('progressBar').style.display = 'block';
+    document.getElementById('timerDisplay').style.display = 'block';
+
+    showQuestion(0);
+    startTimer();
+}
+
+function showQuestion(index) {
+    questions.forEach(q => q.classList.remove('active'));
+
+    if (questions[index]) {
+        questions[index].classList.add('active');
+        currentQuestionIndex = index;
+
+        const progress = ((index + 1) / totalQuestions) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+
+        timeLeft = 10;
+        document.getElementById('timer').textContent = timeLeft;
+
+        const currentQuestion = questions[index];
+        currentQuestion.querySelectorAll('.option-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        currentQuestion.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+        });
+
+        const nextBtn = currentQuestion.querySelector('.next-btn');
+        nextBtn.disabled = true;
+    }
+}
+
+function selectOption(optionElement, value) {
+    const questionCard = optionElement.closest('.question-card');
+
+    questionCard.querySelectorAll('.option-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+
+    optionElement.classList.add('selected');
+    const radio = optionElement.querySelector('input[type="radio"]');
+    radio.checked = true;
+
+    const questionId = questionCard.getAttribute('data-question-id');
+    answers[questionId] = value;
+
+    const nextBtn = questionCard.querySelector('.next-btn');
+    nextBtn.disabled = false;
+}
+
+function startTimer() {
+    clearInterval(timer);
+    timeLeft = 10;
+    document.getElementById('timer').textContent = timeLeft;
+    document.getElementById('timerDisplay').classList.remove('warning');
+
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+
+        if (timeLeft <= 3) {
+            document.getElementById('timerDisplay').classList.add('warning');
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            nextQuestion();
+        }
+    }, 1000);
+}
+
+function nextQuestion() {
+    if (quizFinished) return;
+    clearInterval(timer);
+
+    const currentQuestion = questions[currentQuestionIndex];
+    const questionId = currentQuestion.getAttribute('data-question-id');
+    const selectedRadio = currentQuestion.querySelector('input[type="radio"]:checked');
+    answers[questionId] = selectedRadio ? selectedRadio.value : '';
+
+    if (currentQuestionIndex < totalQuestions - 1) {
+        showQuestion(currentQuestionIndex + 1);
+        startTimer();
+    } else {
+        quizFinished = true;
+        submitQuiz();
+    }
+}
+
+function submitQuiz() {
+    questions.forEach(questionCard => {
+        const questionId = questionCard.getAttribute('data-question-id');
+        const answer = answers[questionId] || '';
+
+        if (answer) {
+            const input = questionCard.querySelector(`input[name="question_${questionId}"][value="${answer}"]`);
+            if (input) input.checked = true;
+        } else {
+            questionCard.querySelectorAll(`input[name="question_${questionId}"]`).forEach(radio => {
+                radio.checked = false;
+            });
+
+            let hiddenInput = questionCard.querySelector(`input[name="question_${questionId}"][type="hidden"][value=""]`);
+            if (!hiddenInput) {
+                hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = `question_${questionId}`;
+                hiddenInput.value = '';
+                questionCard.appendChild(hiddenInput);
+            }
+        }
+    });
+
+    document.getElementById('quizForm').submit();
+}
+</script>
+
+
+</body>
+</html>

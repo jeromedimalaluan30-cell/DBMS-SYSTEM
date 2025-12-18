@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pinoy Quiz Trivia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("fromLogin") === "yes") {
+        document.body.classList.add("fade-home");
+        sessionStorage.removeItem("fromLogin");
+    }
+});
+</script>
+
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <div class="logo">🇵🇭 Pinoy Quiz</div>
+
+    <nav class="header-nav">
+        <a href="{{ url_for('home') }}" class="active">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+    </nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="hero-content">
+
+        <h1>Pinoy Quiz Trivia</h1>
+        <p class="subtitle">Test your knowledge of Filipino history, culture, and geography.</p>
+
+        <div class="hero-buttons">
+            <a href="{{ url_for('login') }}" class="btn1-main">Play Now</a>
+
+            <a href="{{ url_for('about') }}" class="btn-ghost">About</a>
+            <a href="{{ url_for('login') }}" class="btn-admin">Login</a>
+        </div>
+    </div>
+</section>
+
+<!-- WHY SECTION -->
+<section class="why-section">
+    <h2>Why Play Pinoy Quiz?</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>🇵🇭 Fun Learning</h3>
+            <p>Enjoy trivia about Philippine history, culture, geography, and more.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏆 Leaderboards</h3>
+            <p>Compete with friends! Save your score and climb the rankings.</p>
+        </div>
+
+        <div class="card">
+            <h3>📚 Educational</h3>
+            <p>Perfect for students, teachers, and curious learners.</p>
+        </div>
+
+        <div class="card">
+            <h3>🎮 Developer</h3>
+            <p>Ricky Dolor, Jerome Dimalaluan, Elmar Jerome Robles, Angelo Dimaculangan</p>
+        </div>
+    </div>
+</section>
+
+<!-- PLAY NOW BOX -->
+<section class="play-now-box">
+    <h2>Ready to Test Your Knowledge?</h2>
+    <p>Choose a category and start your quiz journey! Learn. Compete. Enjoy.</p>
+    <a href="{{ url_for('login') }}" class="start-btn">Start Quiz</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+    <div>
+        <strong>Pinoy Quiz Trivia</strong><br>
+        Celebrating Filipino knowledge and culture.
+    </div>
+
+    <div>
+        © 2025 Pinoy Quiz Trivia<br>
+        All Rights Reserved.
+    </div>
+</footer>
+
+</body>
+</html>

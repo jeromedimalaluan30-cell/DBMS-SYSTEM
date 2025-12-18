@@ -1,0 +1,18 @@
+<div class="easy-levels" id="easyLevels" style="display:none;">
+{% for lvl in levels %}
+    {% if lvl.category_id == currentCategory and lvl.difficulty == 'easy' %}
+    <a href="#"
+       class="level-box"
+       data-level="{{ lvl.level_number }}"
+       onclick="startEasyLevel(event, {{ lvl.level_number }})">
+        <h4>Level {{ lvl.level_number }}</h4>
+        <p>Easy</p>
+        <span class="completion-info"
+              data-category="{{ currentCategory }}"
+              data-difficulty="easy"
+              data-level="{{ lvl.level_number }}">
+        </span>
+    </a>
+    {% endif %}
+{% endfor %}
+</div>

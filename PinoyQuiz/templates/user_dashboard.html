@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Pinoy Quiz</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+        <!-- POPUP MODAL -->
+<div id="phPopup" class="ph-popup-overlay">
+    <div class="ph-popup">
+        <button class="popup-close" onclick="closePopup()">×</button>
+        <h2 id="popupTitle"></h2>
+        <p id="popupContent"></p>
+    </div>
+</div>
+<script>
+function openPopup(type) {
+    const title = document.getElementById("popupTitle");
+    const content = document.getElementById("popupContent");
+
+    if (type === "history") {
+        title.innerText = "🇵🇭 About Philippine History";
+        content.innerText =
+            "Philippine history focuses on important events, national heroes, and periods that shaped the country. It includes the pre-colonial era, Spanish, American, and Japanese periods, as well as the struggle for independence and the development of the modern nation.";
+    }
+
+    if (type === "culture") {
+        title.innerText = "🎭 About Filipino Culture";
+        content.innerText =
+            "Filipino culture reflects strong family ties, respect for elders, colorful festivals, and rich traditions. Values such as bayanihan, hospitality, and resilience show the unique identity of Filipinos.";
+    }
+
+    if (type === "geography") {
+        title.innerText = "🗺️ About Philippine Geography";
+        content.innerText =
+            "The Philippines is an archipelago made up of thousands of islands. Its geography includes mountains, volcanoes, rivers, and coastlines, which influence climate, biodiversity, and regional life.";
+    }
+
+    document.getElementById("phPopup").classList.add("show");
+}
+
+function closePopup() {
+    document.getElementById("phPopup").classList.remove("show");
+}
+</script>
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <h1>Welcome, {{ user.username }}! 👋</h1>
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+
+    <!-- USER INFO -->
+    <div class="user-info-card">
+        <div class="user-avatar">
+            {% if user.picture %}
+                <img src="{{ user.picture }}" class="avatar-img">
+            {% else %}
+                {{ user.username[0]|upper }}
+            {% endif %}
+        </div>
+
+        <div class="user-details">
+            <h3>{{ user.username }}</h3>
+
+            <p><strong>Login Method:</strong>
+                {% if user.auth_method == 'google' %}
+                    <span class="google-badge">
+                        <i class="fab fa-google"></i> Google Account
+                    </span>
+                {% else %}
+                    <span class="local-badge">
+                        <i class="fa-solid fa-user"></i> Local Account
+                    </span>
+                {% endif %}
+            </p>
+
+            {% if user.email %}
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="dashboard-actions">
+
+        <a href="{{ url_for('quiz_dashboard') }}" class="action-card">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>Start Quiz</span>
+        </a>
+
+        <a href="{{ url_for('leaderboard') }}" class="action-card">
+            <i class="fa-solid fa-trophy"></i>
+            <span>Leaderboard</span>
+        </a>
+
+        <a href="{{ url_for('reviewer') }}" class="action-card">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Reviewer</span>
+        </a>
+
+    </div>
+
+    <!-- ==============================
+         PHILIPPINES KNOWLEDGE HUB
+    =============================== -->
+    <section class="ph-features">
+
+        <h2 class="ph-title">🌏 Explore the Philippines</h2>
+        <p class="ph-subtitle">
+            Learn while you play. Discover the rich history, culture, and geography of the Philippines.
+        </p>
+
+        <div class="ph-feature-grid">
+
+            <!-- HISTORY -->
+<div class="ph-feature-card clickable" onclick="openPopup('history')">
+    <div class="ph-icon history">
+        <i class="fa-solid fa-landmark"></i>
+    </div>
+    <h3>Philippine History</h3>
+    <p>Understand major historical events and heroes that shaped the nation.</p>
+</div>
+
+<!-- CULTURE -->
+<div class="ph-feature-card clickable" onclick="openPopup('culture')">
+    <div class="ph-icon culture">
+        <i class="fa-solid fa-mask"></i>
+    </div>
+    <h3>Filipino Culture</h3>
+    <p>Appreciate Filipino values, traditions, food, and festivals.</p>
+</div>
+
+<!-- GEOGRAPHY -->
+<div class="ph-feature-card clickable" onclick="openPopup('geography')">
+    <div class="ph-icon geography">
+        <i class="fa-solid fa-earth-asia"></i>
+    </div>
+    <h3>Philippine Geography</h3>
+    <p>Learn about the islands, landmarks, and natural wonders of the country.</p>
+</div>
+
+
+        </div>
+
+        <div class="ph-callout">
+            <i class="fa-solid fa-lightbulb"></i>
+            <p>
+                This quiz platform promotes learning and appreciation of Philippine heritage among young learners.
+            </p>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+    <div>
+        <strong>Pinoy Quiz Trivia</strong><br>
+        Celebrating Filipino knowledge and culture.
+    </div>
+    <div>
+        © 2025 Pinoy Quiz Trivia<br>
+        All Rights Reserved.
+    </div>
+</footer>
+
+</body>
+</html>
